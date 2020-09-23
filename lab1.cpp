@@ -22,9 +22,34 @@ ListNode* getNode(int x)
     return p;
 }
 
-ListNode* DeleteAtBegin(ListNode* head)
+ListNode* deleteAtBegin(ListNode* head)
 {
+    ListNode* p=head;
+    head=XOR(head->next,NULL);
+    cout<<head->val<<endl;
+    head->next=XOR(XOR(head->next,p),NULL);
+    free(p);
+    return head;
+}
 
+ListNode* deleteAtEnd(ListNode* head)
+{
+    ListNode* t=head;
+    ListNode* pvs=NULL;
+    ListNode* tnxt=XOR(t->next,pvs);
+    while(tnxt!=NULL)
+    {
+        //cout<<t->val<<"->";
+        tnxt=XOR(t->next,pvs);
+        pvs=t;
+        t=tnxt;
+    }
+    ListNode* tail=pvs;
+    ListNode* tailpvs=XOR(tail->next,NULL);
+    tailpvs->next=XOR(XOR(tail,tailpvs->next),NULL);
+    cout<<"tail:"<<tail->val<<"  "<<"tailpvs:"<<tailpvs->val<<endl;
+    free(tail);
+    return head;
 }
 
 ListNode* addAtBegin(ListNode* head,int x)
@@ -67,6 +92,8 @@ int main()
     head=addAtBegin(head,4);
     head=addAtBegin(head,5);
     head=AddAtEnd(head,6);
+    head=deleteAtBegin(head);
+    head=deleteAtEnd(head);
     cout<<endl;
     ListNode* t=head;
     ListNode* pvs=NULL;
